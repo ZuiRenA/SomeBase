@@ -1,7 +1,8 @@
-package com.shen.somebase
+package com.shen.somebase.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.shen.somebase.R
 
 class MainActivity : AppCompatActivity() {
 
