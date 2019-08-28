@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepatrributes EnclosingMethod
+
+-keep interface com.shen.somebase.mvp.IMVP.**{*;}
+-keepclassmembernames class * extends com.shen.somebase.mvp.BaseActivityKt {
+    private P createPresenterJava();
+}
+
+-keep abstract class androidx.lifecycle.ViewModel.**{*;}
