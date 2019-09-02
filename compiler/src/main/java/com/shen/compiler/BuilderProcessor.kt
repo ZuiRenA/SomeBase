@@ -28,7 +28,7 @@ import javax.tools.Diagnostic
 class BuilderProcessor : AbstractProcessor() {
     private val supportedAnnotations = setOf(Builder::class.java, Required::class.java, Optional::class.java)
 
-    override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.RELEASE_8
+    override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.RELEASE_7
 
     override fun getSupportedAnnotationTypes(): MutableSet<String>
             = supportedAnnotations.mapTo(HashSet(), Class<*>::getCanonicalName)

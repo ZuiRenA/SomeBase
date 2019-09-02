@@ -20,10 +20,10 @@ class InjectMethodBuilder(private val activityClass: ActivityClass) {
             .addParameter(BUNDLE.java, "savedInstanceState")
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
             .returns(TypeName.VOID)
-            .beginControlFlow("if (instance instanceof \$T)", activityClass.typeElement)
-            .addStatement("\$T typeInstance = (\$T) instance", activityClass.typeElement, activityClass.typeElement)
+            .beginControlFlow("if(instance instanceof \$T)", activityClass.typeElement)
+            .addStatement("\$T typedInstance = (\$T) instance", activityClass.typeElement, activityClass.typeElement)
             .addStatement("\$T extras = savedInstanceState == null ? typedInstance.getIntent().getExtras() : savedInstanceState", BUNDLE.java)
-            .beginControlFlow("if (extras != null)")
+            .beginControlFlow("if(extras != null)")
 
         activityClass.fields.forEach {
             val name = it.name
@@ -33,7 +33,7 @@ class InjectMethodBuilder(private val activityClass: ActivityClass) {
                 injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S, \$L)",
                     typeName, name, BUNDLE_UTILS.java, typeName, name, it.defaultValue)
             } else {
-                injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S",
+                injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S)",
                     typeName, name, BUNDLE_UTILS.java, typeName, name)
             }
 

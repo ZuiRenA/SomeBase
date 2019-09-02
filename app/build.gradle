@@ -64,4 +64,5 @@ dependencies {
     implementation project(":annotations")
     implementation project(":runtime")
     kapt project(":compiler")
+    compile project(path: ':runtime')
 }

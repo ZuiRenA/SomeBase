@@ -19,14 +19,14 @@ class SaveStateMethodBuilder(private val activityClass: ActivityClass) {
             .returns(TypeName.VOID)
             .addParameter(ACTIVITY.java, "instance")
             .addParameter(BUNDLE.java, "outState")
-            .beginControlFlow("if (instance instanceof \$T)", activityClass.typeElement)
-            .addStatement("\$T typedInstance = ($\$T) instance", activityClass.typeElement, activityClass.typeElement)
+            .beginControlFlow("if(instance instanceof \$T)", activityClass.typeElement)
+            .addStatement("\$T typedInstance = (\$T) instance", activityClass.typeElement, activityClass.typeElement)
             .addStatement("\$T intent = new \$T()", INTENT.java, INTENT.java)
 
         activityClass.fields.forEach {
             val name = it.name
-            if (it.isPrivate) {
-                methodBuilder.addStatement("intent.putExtra(\$, typeInstance.get\$L())", name, name.capitalize())
+            if(it.isPrivate){
+                methodBuilder.addStatement("intent.putExtra(\$S, typedInstance.get\$L())", name, name.capitalize())
             } else {
                 methodBuilder.addStatement("intent.putExtra(\$S, typedInstance.\$L)", name, name)
             }

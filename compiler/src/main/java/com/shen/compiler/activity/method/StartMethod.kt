@@ -41,7 +41,7 @@ class StartMethod(private val activityClass: ActivityClass, private val name: St
             .returns(TypeName.VOID)
             .addParameter(CONTEXT.java, "context")
 
-        methodBuilder.addStatement("\$T intent = new \$T(context, \$T.class",
+        methodBuilder.addStatement("\$T intent = new \$T(context, \$T.class)",
             INTENT.java, INTENT.java, activityClass.typeElement)
 
         fields.forEach {

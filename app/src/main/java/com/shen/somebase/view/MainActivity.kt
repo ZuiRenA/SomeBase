@@ -14,11 +14,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn1.setOnClickListener {
-
+            JavaTestActivityBuilder.start(this, 30, "shen", "wow")
         }
 
         btn2.setOnClickListener {
-
+            startKotlinTestActivity("shen")
         }
     }
 }
