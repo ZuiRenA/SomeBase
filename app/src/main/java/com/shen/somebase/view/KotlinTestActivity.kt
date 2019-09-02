@@ -13,10 +13,10 @@ class KotlinTestActivity : AppCompatActivity() {
     @Required
     lateinit var name: String
 
-    @Optional(intValue = 0)
-    var age: Int = -5
+    @Optional
+    var age: Long = 0
 
-    @Optional(stringValue = "describe")
+    @Optional
     lateinit var describe: String
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -26,6 +26,6 @@ class ActivityClass(val typeElement: TypeElement) {
     override fun toString(): String = "$packageName.$simpleName[${fields.joinToString()}]"
 
     companion object {
-        val META_DATA: Class<out Annotation> = Class.forName("kotlin.Metadata").asSubclass(Annotation::class.java)
+        val META_DATA: Class<out Annotation>? = Class.forName("kotlin.Metadata").asSubclass(Annotation::class.java)
     }
 }

@@ -63,5 +63,5 @@ dependencies {
 
     implementation project(":annotations")
     implementation project(":runtime")
-    annotationProcessor project(":compiler")
+    kapt project(":compiler")
 }

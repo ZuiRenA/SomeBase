@@ -42,13 +42,12 @@ class BuilderProcessor : AbstractProcessor() {
         annotations: MutableSet<out TypeElement>?,
         env: RoundEnvironment
     ): Boolean {
-
         val activityClass = HashMap<Element, ActivityClass>()
         env.getElementsAnnotatedWith(Builder::class.java)
             .filter { it.kind.isClass }
             .forEach {
                 try {
-                    if (it.asType().isSubTypeOf("android.app.Activity")) {
+                    if (it.asType().isSubTypeOf("androidx.appcompat.app.AppCompatActivity")) {
                         activityClass[it] = ActivityClass(it as TypeElement)
                     } else {
                         Logger.error(it, "Unsupported typeElement: ${it.simpleName}}")
