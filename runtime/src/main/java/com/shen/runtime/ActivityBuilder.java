@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 
 /*
  * created by shen at 2019/9/2 14:50
@@ -55,7 +56,7 @@ public class ActivityBuilder {
 
     private void performInject(Activity activity, Bundle savedInstanceState){
         try {
-            Class.forName(activity.getClass().getName() + BUILDER_NAME_POSIX).getDeclaredMethod("inject", Activity.class, Bundle.class).invoke(null, activity, savedInstanceState);
+            Class.forName(activity.getClass().getName() + BUILDER_NAME_POSIX).getDeclaredMethod("inject", AppCompatActivity.class, Bundle.class).invoke(null, activity, savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,7 +64,7 @@ public class ActivityBuilder {
 
     private void performSaveState(Activity activity, Bundle outState){
         try {
-            Class.forName(activity.getClass().getName() + BUILDER_NAME_POSIX).getDeclaredMethod("saveState", Activity.class, Bundle.class).invoke(null, activity, outState);
+            Class.forName(activity.getClass().getName() + BUILDER_NAME_POSIX).getDeclaredMethod("saveState", AppCompatActivity.class, Bundle.class).invoke(null, activity, outState);
         } catch (Exception e) {
             e.printStackTrace();
         }
