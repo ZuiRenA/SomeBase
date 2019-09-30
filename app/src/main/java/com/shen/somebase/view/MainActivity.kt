@@ -1,9 +1,7 @@
 package com.shen.somebase.view
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.shen.somebase.R
 import kotlinx.android.synthetic.main.activity_main.*
 
