@@ -14,24 +14,25 @@ import com.squareup.kotlinpoet.*
 class StartKotlinFunctionBuilder(private val activityClass: ActivityClass) {
     fun build(fileBuilder: FileSpec.Builder) {
         val name = ActivityClassBuilder.METHOD_NAME + activityClass.simpleName
-        val funBuilder = FunSpec.builder(name)
+        val functionBuilder = FunSpec.builder(name)
             .receiver(CONTEXT.kotlin)
             .addModifiers(KModifier.PUBLIC)
             .returns(UNIT)
             .addStatement("val intent = %T(this, %T::class.java)", INTENT.kotlin, activityClass.typeElement)
 
-        activityClass.fields.forEach {
-            val nameInner = it.name
-            val className = it.asKotlinTypeName()
-            if (it is OptionalField) {
-                funBuilder.addParameter(ParameterSpec.builder(nameInner, className).defaultValue("null").build())
+        activityClass.fields.forEach { field ->
+            val name = field.name
+            val className = field.asKotlinTypeName()
+            if(field is OptionalField){
+                functionBuilder.addParameter(ParameterSpec.builder(name, className).defaultValue("null").build())
             } else {
-                funBuilder.addParameter(nameInner, className)
+                functionBuilder.addParameter(name, className)
             }
-            funBuilder.addStatement("intent.putExtra(%S, %L)", nameInner, nameInner)
+
+            functionBuilder.addStatement("intent.putExtra(%S, %L)", name, name)
         }
 
-        funBuilder.addStatement("%T.INSTANCE.startActivity(this, intent)", ACTIVITY_BUILDER.kotlin)
-        fileBuilder.addFunction(funBuilder.build())
+        functionBuilder.addStatement("%T.INSTANCE.startActivity(this, intent)", ACTIVITY_BUILDER.kotlin)
+        fileBuilder.addFunction(functionBuilder.build())
     }
 }

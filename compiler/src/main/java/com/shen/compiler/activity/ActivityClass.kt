@@ -11,7 +11,6 @@ import javax.lang.model.element.TypeElement
 * created by shen at 2019/9/2 11:26
 */
 class ActivityClass(val typeElement: TypeElement) {
-
     val simpleName: String = typeElement.simpleName()
     val packageName: String = typeElement.packageName()
 

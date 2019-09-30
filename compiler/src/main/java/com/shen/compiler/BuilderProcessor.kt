@@ -61,16 +61,16 @@ class BuilderProcessor : AbstractProcessor() {
             .filter { it.kind == ElementKind.FIELD }
             .forEach {
                 activityClass[it.enclosingElement]?.fields?.add(Field(it as Symbol.VarSymbol)) ?:
-                        Logger.error(element = it, message = "Field $it annotated as Required while " +
-                                "${it.enclosedElements} not annotated")
+                Logger.error(element = it, message = "Field $it annotated as Required while " +
+                        "${it.enclosedElements} not annotated")
             }
 
         env.getElementsAnnotatedWith(Optional::class.java)
             .filter { it.kind == ElementKind.FIELD }
             .forEach {
                 activityClass[it.enclosingElement]?.fields?.add(OptionalField(it as Symbol.VarSymbol)) ?:
-                        Logger.error(it, "Field $it annotated as Required while " +
-                                "${it.enclosingElement} not annotated.")
+                Logger.error(it, "Field $it annotated as Required while " +
+                        "${it.enclosingElement} not annotated.")
             }
 
         activityClass.values.forEach {

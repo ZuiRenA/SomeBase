@@ -10,12 +10,12 @@ import javax.lang.model.element.Modifier
 * created by shen at 2019/9/2 11:40
 */
 class ConstantBuilder(private val activityClass: ActivityClass) {
-    fun builder(typeBuilder: TypeSpec.Builder) {
-        activityClass.fields.forEach {
-            typeBuilder.addField(FieldSpec.builder(String::class.java,
-                it.prefix + it.name.camelToUnderline().toUpperCase(),
-                Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .initializer("\$S", it.name).build())
+    fun build(typeBuilder: TypeSpec.Builder) {
+        activityClass.fields.forEach { field ->
+            typeBuilder.addField(FieldSpec.builder(String::class.java, field.prefix + field.name.camelToUnderline().toUpperCase(),
+                Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL
+            ).initializer("\$S", field.name)
+                .build())
         }
     }
 }

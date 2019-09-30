@@ -25,19 +25,17 @@ class InjectMethodBuilder(private val activityClass: ActivityClass) {
             .addStatement("\$T extras = savedInstanceState == null ? typedInstance.getIntent().getExtras() : savedInstanceState", BUNDLE.java)
             .beginControlFlow("if(extras != null)")
 
-        activityClass.fields.forEach {
-            val name = it.name
-            val typeName = it.asJavaTypeName().box()
+        activityClass.fields.forEach { field ->
+            val name = field.name
+            val typeName = field.asJavaTypeName().box()
 
-            if (it is OptionalField) {
-                injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S, \$L)",
-                    typeName, name, BUNDLE_UTILS.java, typeName, name, it.defaultValue)
+            if(field is OptionalField){
+                injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S, \$L)", typeName, name, BUNDLE_UTILS.java, typeName, name, field.defaultValue)
             } else {
-                injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S)",
-                    typeName, name, BUNDLE_UTILS.java, typeName, name)
+                injectMethodBuilder.addStatement("\$T \$LValue = \$T.<\$T>get(extras, \$S)", typeName, name, BUNDLE_UTILS.java, typeName, name)
             }
 
-            if (it.isPrivate) {
+            if(field.isPrivate){
                 injectMethodBuilder.addStatement("typedInstance.set\$L(\$LValue)", name.capitalize(), name)
             } else {
                 injectMethodBuilder.addStatement("typedInstance.\$L = \$LValue", name, name)

@@ -17,24 +17,25 @@ class StartMethodBuilder(private val activityClass: ActivityClass) {
     fun build(typeBuilder: TypeSpec.Builder) {
         val startMethod = StartMethod(activityClass, ActivityClassBuilder.METHOD_NAME)
 
-        val groupedField = activityClass.fields.groupBy { it is OptionalField }
-        val requiredField = groupedField[false] ?: emptyList()
-        val optionalField = groupedField[true] ?: emptyList()
+        val groupedFields = activityClass.fields.groupBy { it is OptionalField }
+        val requiredFields = groupedFields[false] ?: emptyList()
+        val optionalFields = groupedFields[true] ?: emptyList()
 
-        startMethod.addAllField(requiredField)
+        startMethod.addAllField(requiredFields)
 
         val startMethodNoOptional = startMethod.copy(ActivityClassBuilder.METHOD_NAME_NO_OPTIONAL)
-        startMethod.addAllField(optionalField)
+
+        startMethod.addAllField(optionalFields)
         startMethod.build(typeBuilder)
 
-        if (optionalField.isEmpty()) {
+        if(optionalFields.isNotEmpty()){
             startMethodNoOptional.build(typeBuilder)
         }
 
-        if (optionalField.size < 3) {
-            optionalField.forEach { field ->
+        if(optionalFields.size < 3){
+            optionalFields.forEach{field ->
                 startMethodNoOptional.copy(ActivityClassBuilder.METHOD_NAME_FOR_OPTIONAL + field.name.capitalize())
-                    .also { it.addField(field = field) }
+                    .also { it.addField(field) }
                     .build(typeBuilder)
             }
         } else {
@@ -43,8 +44,10 @@ class StartMethodBuilder(private val activityClass: ActivityClass) {
                 .addModifiers(Modifier.PRIVATE)
                 .addParameter(INTENT.java, "intent")
             val builderClassName = ClassName.get(activityClass.packageName, builderName)
-            optionalField.forEach { field ->
-                typeBuilder.addField(FieldSpec.builder(field.asJavaTypeName(), field.name, Modifier.PRIVATE).build())
+            optionalFields.forEach { field ->
+                typeBuilder.addField(FieldSpec.builder(field.asJavaTypeName(), field.name,
+                    Modifier.PRIVATE
+                ).build())
                 typeBuilder.addMethod(MethodSpec.methodBuilder(field.name)
                     .addModifiers(Modifier.PUBLIC)
                     .addParameter(field.asJavaTypeName(), field.name)
@@ -53,15 +56,14 @@ class StartMethodBuilder(private val activityClass: ActivityClass) {
                     .returns(builderClassName)
                     .build())
 
-                if (field.isPrimitive) {
+                if(field.isPrimitive){
                     fillIntentMethodBuilder.addStatement("intent.putExtra(\$S, \$L)", field.name, field.name)
                 } else {
-                    fillIntentMethodBuilder.beginControlFlow("if (\$L != null)", field.name)
+                    fillIntentMethodBuilder.beginControlFlow("if(\$L != null)", field.name)
                         .addStatement("intent.putExtra(\$S, \$L)", field.name, field.name)
                         .endControlFlow()
                 }
             }
-
             typeBuilder.addMethod(fillIntentMethodBuilder.build())
             startMethodNoOptional.copy(ActivityClassBuilder.METHOD_NAME_FOR_OPTIONALS)
                 .staticMethod(false)

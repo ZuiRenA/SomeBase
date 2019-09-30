@@ -26,9 +26,9 @@ class ActivityClassBuilder (private val activityClass: ActivityClass) {
         val typeBuilder = TypeSpec.classBuilder(activityClass.simpleName + POSIX)
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
 
-        ConstantBuilder(activityClass).builder(typeBuilder)
+        ConstantBuilder(activityClass).build(typeBuilder)
         StartMethodBuilder(activityClass).build(typeBuilder)
-        SaveStateMethodBuilder(activityClass).builder(typeBuilder)
+        SaveStateMethodBuilder(activityClass).build(typeBuilder)
         InjectMethodBuilder(activityClass).build(typeBuilder)
 
         if (activityClass.isKotlin) {

@@ -6,14 +6,16 @@
     <dist:module dist:instant="true" />
 
     <application
-        android:name=".view.BaseApplication"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.KotlinTestActivity"></activity>
+        <activity android:name=".view.TopicActivity"></activity>
+        <activity android:name=".view.RecyclerTestActivity" />
+        <activity android:name=".view.KotlinTestActivity" />
         <activity
             android:name=".view.JavaTestActivity"
             android:label="@string/title_activity_java_test"

@@ -1,12 +1,11 @@
 package com.shen.somebase.widget
 
 import android.app.Activity
-import android.content.Context
 import android.text.TextUtils
 import android.view.Gravity
 import android.widget.Toast
 
-import com.shen.somebase.view.BaseApplication
+import com.shen.somebase.BaseApplication
 
 /**
  * 封装Toast，以便每次toast出来的msg能够及时显示

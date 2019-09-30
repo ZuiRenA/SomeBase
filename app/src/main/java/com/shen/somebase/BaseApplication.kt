@@ -1,7 +1,6 @@
-package com.shen.somebase.view
+package com.shen.somebase
 
 import android.app.Application
-import android.content.Context
 import com.shen.runtime.ActivityBuilder
 
 /**

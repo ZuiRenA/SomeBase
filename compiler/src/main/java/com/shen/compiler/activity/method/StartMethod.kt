@@ -18,13 +18,13 @@ class StartMethod(private val activityClass: ActivityClass, private val name: St
 
     private var isStaticMethod = true
 
-    fun staticMethod(staticMethod: Boolean): StartMethod {
-        this.isStaticMethod =staticMethod
+    fun staticMethod(staticMethod: Boolean): StartMethod{
+        this.isStaticMethod = staticMethod
         return this
     }
 
-    fun addAllField(field: List<Field>) {
-        this.fields += field
+    fun addAllField(fields: List<Field>){
+        this.fields += fields
     }
 
     fun addField(field: Field){
@@ -35,22 +35,22 @@ class StartMethod(private val activityClass: ActivityClass, private val name: St
         it.fields.addAll(fields)
     }
 
-    fun build(typeBuilder: TypeSpec.Builder) {
+    fun build(typeBuilder: TypeSpec.Builder){
         val methodBuilder = MethodSpec.methodBuilder(name)
             .addModifiers(Modifier.PUBLIC)
             .returns(TypeName.VOID)
             .addParameter(CONTEXT.java, "context")
 
-        methodBuilder.addStatement("\$T intent = new \$T(context, \$T.class)",
-            INTENT.java, INTENT.java, activityClass.typeElement)
+        methodBuilder.addStatement("\$T intent = new \$T(context, \$T.class)", INTENT.java, INTENT.java, activityClass.typeElement)
 
-        fields.forEach {
-            val name = it.name
-            methodBuilder.addParameter(it.asJavaTypeName(), name)
+        fields.forEach {field ->
+            val name = field.name
+            methodBuilder.addParameter(field.asJavaTypeName(), name)
+                // intent.putExtra("age", age)
                 .addStatement("intent.putExtra(\$S, \$L)", name, name)
         }
 
-        if (isStaticMethod) {
+        if(isStaticMethod){
             methodBuilder.addModifiers(Modifier.STATIC)
         } else {
             methodBuilder.addStatement("fillIntent(intent)")
