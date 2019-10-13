@@ -1,2 +1,2 @@
-include ':app', ':annotations', ':compiler', ':runtime'
+include ':app', ':annotations', ':compiler', ':runtime', ':factor'
 rootProject.name='SomeBase'
