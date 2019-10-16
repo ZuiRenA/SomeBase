@@ -1,6 +1,6 @@
 package com.shen.somebase.view
 
-import androidx.recyclerview.widget.ItemTouchHelper
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.feheadline.news.coroutine_demo.BaseViewModelActivity
 import com.shen.somebase.R
@@ -17,6 +17,7 @@ class DragItemTestActivity : BaseViewModelActivity<DragItemTestViewModel>() {
     private lateinit var subscribeIndustry: SubscribeIndustry
 
     override fun init() {
+        subscribeIndustry = SubscribeIndustry()
         initRv()
     }
 
@@ -31,19 +32,19 @@ class DragItemTestActivity : BaseViewModelActivity<DragItemTestViewModel>() {
             }
             .build()
 
-        val itemTouchHelper = ItemTouchHelper(callback)
-
-        val adapter = DragSwipeAdapter(AdapterManager.instance.subscribeIndustryManager(
+        val manager = AdapterManager.instance.subscribeIndustryManager(
             this,
             callback,
-            subscribeIndustry,
-            itemTouchHelper
-        ))
+            subscribeIndustry
+        )
+
+//        val adapter = DragSwipeAdapter(manager)
 
         rvDragTest.apply {
             layoutManager = lm
             this.adapter = adapter
-            itemTouchHelper.attachToRecyclerView(this)
+            manager.itemTouchHelper.attachToRecyclerView(this)
+            Log.d("ItemTouchHelper", manager.itemTouchHelper.toString())
         }
     }
 }

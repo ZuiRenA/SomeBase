@@ -1,5 +1,6 @@
 package com.shen.somebase.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.shen.somebase.R
@@ -17,6 +18,11 @@ class MainActivity : AppCompatActivity() {
 
         btn2.setOnClickListener {
             startKotlinTestActivity("shen")
+        }
+
+        btn3.setOnClickListener {
+            val intent = Intent(this, DragItemTestActivity::class.java)
+            startActivity(intent)
         }
     }
 }

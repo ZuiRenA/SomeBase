@@ -18,4 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Go KotlinTestActivity" />
+
+    <Button
+        android:id="@+id/btn3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Go DragItemTestAtivity"/>
 </LinearLayout>

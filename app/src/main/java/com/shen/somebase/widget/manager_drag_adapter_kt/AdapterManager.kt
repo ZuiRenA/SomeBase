@@ -1,6 +1,7 @@
 package com.shen.somebase.widget.manager_drag_adapter_kt
 
 import android.content.Context
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.shen.somebase.model.SubscribeIndustry
 
@@ -18,8 +19,7 @@ class AdapterManager private constructor() {
     fun subscribeIndustryManager(
         context: Context,
         callback: ItemTouchHelper.Callback,
-        subscribeIndustry: SubscribeIndustry,
-        itemTouchHelper: ItemTouchHelper
+        subscribeIndustry: SubscribeIndustry
     ): IManagerDrag<SubscribeIndustry> = object : IManagerDrag<SubscribeIndustry> {
 
         override val data: SubscribeIndustry = subscribeIndustry
@@ -27,7 +27,11 @@ class AdapterManager private constructor() {
         override val dragItemsId: IntArray? = null
         override val swipeItemsId: IntArray? = null
         override val callback: ItemTouchHelper.Callback = callback
-        override val itemTouchHelper: ItemTouchHelper = itemTouchHelper
+        override val itemTouchHelper: ItemTouchHelper = ItemTouchHelper(callback)
+
+        init {
+            Log.d("ItemTouchHelper", itemTouchHelper.toString())
+        }
 
         override fun getLayoutId(viewType: Int): Int = when(viewType) {
             0 -> 0
