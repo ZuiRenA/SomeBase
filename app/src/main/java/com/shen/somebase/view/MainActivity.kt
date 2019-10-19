@@ -2,9 +2,12 @@ package com.shen.somebase.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.shen.somebase.R
 import kotlinx.android.synthetic.main.activity_main.*
+import project.shen.dessert_life.factor_dialog.factorDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,8 +24,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn3.setOnClickListener {
-            val intent = Intent(this, DragItemTestActivity::class.java)
-            startActivity(intent)
+            factorDialog {
+                context = this@MainActivity
+                layoutIdRes = R.layout.dialog_loading
+            }
         }
+
     }
 }
