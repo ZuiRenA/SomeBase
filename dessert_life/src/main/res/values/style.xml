@@ -2,7 +2,7 @@
 <resources>
     <style name="FactorStyle" parent="@android:style/Theme.Dialog">
         <!--//设置dialog的背景，此处为系统给定的透明值 -->
-        <item name="android:windowBackground">@android:color/transparent</item>
+<!--        <item name="android:windowBackground">@android:color/transparent</item>-->
         <!--//Dialog的windowFrame框为无 -->
         <item name="android:windowFrame">@null</item>
         <!--//是否显示标题-->
@@ -16,6 +16,6 @@
         <!--//设置Activity出现方式 -->
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <!--//背景是否模糊显示 -->
-        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 </resources>
