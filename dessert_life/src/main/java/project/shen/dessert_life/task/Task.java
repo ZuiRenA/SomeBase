@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
-import project.shen.dessert_life.task.Utils.DispatcherExcutor;
+import project.shen.dessert_life.task.Utils.DispatcherExecutor;
 
 public abstract class Task implements ITask {
     protected String tag = getClass().getSimpleName();
@@ -73,7 +73,7 @@ public abstract class Task implements ITask {
      */
     @Override
     public ExecutorService runOn() {
-        return DispatcherExcutor.getIOExcutor();
+        return DispatcherExecutor.getIOExecute();
     }
 
     /**
