@@ -15,7 +15,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.DragItemTestActivity"></activity>
         <activity android:name=".view.TopicActivity" />
-        <activity android:name=".view.RecyclerTestActivity" />
         <activity android:name=".view.KotlinTestActivity" />
         <activity
             android:name=".view.JavaTestActivity"

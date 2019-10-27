@@ -27,7 +27,7 @@ public class TaskDispatcher {
 
     private long startTime;
     private static final int WAITTING_TIME = 10000;
-    private static WeakReference<Context> contextWeakRef;
+    private static Context context;
     private static boolean isMainProcess;
     private List<Future> futures = new ArrayList<>();
     private static volatile boolean hasInit;
@@ -60,14 +60,14 @@ public class TaskDispatcher {
 
     public static void init(@Nullable Context context) {
         if (context != null) {
-            contextWeakRef = new WeakReference<>(context);
+            TaskDispatcher.context = context;
             hasInit = true;
             isMainProcess = Utils.isMainProcess(context);
         }
     }
 
     public static Context getContext() {
-        return contextWeakRef.get();
+        return context;
     }
 
     public static boolean isMainProcess() {
@@ -166,7 +166,7 @@ public class TaskDispatcher {
 
     private void sendAndExecuteAsyncTasks() {
         for (Task task : allTasks) {
-            if (task.onlyInMainProcess() && isMainProcess()) {
+            if (task.onlyInMainProcess() && !isMainProcess()) {
                 makeTaskDone(task);
             } else {
                 sendTaskReal(task);

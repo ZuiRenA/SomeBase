@@ -3,6 +3,8 @@ package project.shen.dessert_life.task.sort;
 import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -84,6 +86,7 @@ public class TaskSortUtil {
         }
     }
 
+    @Contract(pure = true)
     public static List<Task> getTasksHigh() {
         return newTaskHigh;
     }
