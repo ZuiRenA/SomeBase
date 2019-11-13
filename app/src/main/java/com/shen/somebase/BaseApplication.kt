@@ -33,7 +33,8 @@ class BaseApplication : Application() {
             .addTask(TaskTwo())
             .addTask(TaskThree())
             .addTask(TaskFourJava())
-            .start()
+            
+        DessertDispatcher.getInstance().await()
     }
 
     companion object {

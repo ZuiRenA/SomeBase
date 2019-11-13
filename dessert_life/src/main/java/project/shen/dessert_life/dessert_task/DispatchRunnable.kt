@@ -5,7 +5,6 @@ import android.os.Process
 import androidx.core.os.TraceCompat
 import project.shen.dessert_life.dessert_task.state.currentSituation
 import project.shen.dessert_life.dessert_task.state.markTaskDone
-import project.shen.dessert_life.task.stat.TaskStat
 import project.shen.dessert_life.utils.DebugLog
 
 /**
@@ -66,7 +65,7 @@ class DessertDispatchRunnable : Runnable {
                         + "  needWait " + (task.needWait || Looper.getMainLooper() == Looper.myLooper())
                         + "  ThreadId " + Thread.currentThread().id
                         + "  ThreadName " + Thread.currentThread().name
-                        + "  Situation  " + TaskStat.getCurrentSituation()
+                        + "  Situation  " + currentSituation
             )
         }
     }
