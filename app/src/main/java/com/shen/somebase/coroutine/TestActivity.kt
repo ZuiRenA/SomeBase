@@ -1,7 +1,6 @@
 package com.shen.somebase.coroutine
 
 import androidx.lifecycle.Observer
-import com.feheadline.news.coroutine_demo.BaseViewModelActivity
 import com.shen.somebase.R
 import com.shen.somebase.widget.ToastWidget
 import kotlinx.android.synthetic.main.activity_test.*

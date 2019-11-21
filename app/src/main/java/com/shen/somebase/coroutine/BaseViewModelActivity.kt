@@ -1,4 +1,4 @@
-package com.feheadline.news.coroutine_demo
+package com.shen.somebase.coroutine
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes

@@ -1,17 +1,12 @@
 package com.shen.somebase.view
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.Gravity
-import android.view.WindowManager
 import androidx.lifecycle.Observer
-import com.feheadline.news.coroutine_demo.BaseViewModelActivity
 import com.shen.annotations.Builder
 import com.shen.annotations.Optional
 import com.shen.annotations.Required
 import com.shen.somebase.R
+import com.shen.somebase.coroutine.BaseViewModelActivity
 import kotlinx.android.synthetic.main.activity_topic.*
-import project.shen.dessert_life.factor_dialog.factorDialog
 
 @Builder
 class TopicActivity : BaseViewModelActivity<TopicViewModel>() {
