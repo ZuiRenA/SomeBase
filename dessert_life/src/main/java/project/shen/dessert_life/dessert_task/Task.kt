@@ -53,7 +53,7 @@ abstract class DessertTask : IDessertTask {
      * 是否需要优先执行，解决特殊场景的问题：一个 Task 耗时非常多，但是优先级却一般，很有可能开始的时间比较晚
      * 只适合可以把它尽早开始
      */
-    fun needRunAsSoon(): Boolean = false
+    override fun needRunAsSoon(): Boolean = false
 
     ///Task的优先级，运行在主线程则不要去改优先级
     override fun priority(): Int = Process.THREAD_PRIORITY_BACKGROUND
@@ -102,6 +102,8 @@ interface IDessertTask {
     @IntRange(from = Process.THREAD_PRIORITY_FOREGROUND.toLong(), to = Process.THREAD_PRIORITY_LOWEST.toLong())
     fun priority(): Int
 
+    fun needRunAsSoon(): Boolean
+
     fun run()
 
     ///Task 执行所在的线程池，可以指定，一般默认
@@ -127,3 +129,8 @@ interface IDessertTask {
     val callback: (() -> Unit)?
 }
 
+fun easyTask(block: () -> Unit) = object : DessertTask() {
+    override fun run() {
+        block()
+    }
+}
