@@ -13,7 +13,7 @@ import project.shen.dessert_life.utils.DebugLog
  **/
 class DessertDispatchRunnable : Runnable {
 
-    private lateinit var task: DessertTask
+    private var task: DessertTask
     private var dispatcher: DessertDispatcher? = null
 
     constructor(task: DessertTask): this(task, null)

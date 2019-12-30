@@ -88,4 +88,6 @@ abstract class BaseViewModel: ViewModel() {
     companion object {
         const val JOB_KEY = "androidx.lifecycle.ViewModelCoroutineScope.JOB_KEY"
     }
+
+
 }
