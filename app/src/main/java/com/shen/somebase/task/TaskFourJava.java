@@ -15,7 +15,6 @@ import project.shen.dessert_life.utils.DebugLog;
  **/
 public class TaskFourJava extends DessertTask {
 
-    @Nullable
     @Override
     public List<Class<? extends DessertTask>> getDependOn() {
         return new ArrayList<>(Arrays.asList(

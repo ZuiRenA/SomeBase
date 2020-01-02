@@ -4,12 +4,14 @@ import android.content.Context
 import android.os.Debug
 import android.os.Looper
 import androidx.annotation.UiThread
+import project.shen.dessert_life.dessert_task.annotation_tools.AnnotationConvertTools
 import project.shen.dessert_life.dessert_task.ext.isMainProcess
 import project.shen.dessert_life.dessert_task.ext.isNullOrEmpty
 import project.shen.dessert_life.dessert_task.sort.getSortResult
 import project.shen.dessert_life.dessert_task.state.markTaskDone
 import project.shen.dessert_life.utils.DebugLog
 import java.lang.ref.WeakReference
+import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Future
@@ -65,6 +67,12 @@ class DessertDispatcher {
 
         return this
     }
+
+    fun <T> create(interfaceObj : Class<T>) =
+        AnnotationConvertTools.instance
+            .dispatcher(this)
+            .create(interfaceObj)
+
 
     @UiThread
     fun start() {

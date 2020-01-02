@@ -2,6 +2,7 @@ package project.shen.dessert_life.dessert_task
 
 import android.os.Looper
 import android.os.MessageQueue
+import project.shen.dessert_life.dessert_task.annotation_tools.AnnotationConvertTools
 import java.util.*
 
 /**
@@ -24,6 +25,13 @@ class DelayDessertDispatcher {
 
     fun addTask(task: DessertTask): DelayDessertDispatcher {
         delayTasks.add(task)
+        return this
+    }
+
+    fun <T> create(interfaceObj : Class<T>): DelayDessertDispatcher {
+        AnnotationConvertTools.instance.dispatcher(this)
+            .create(interfaceObj)
+
         return this
     }
 

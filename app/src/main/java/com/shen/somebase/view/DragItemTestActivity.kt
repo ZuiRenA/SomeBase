@@ -2,8 +2,8 @@ package com.shen.somebase.view
 
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.feheadline.news.coroutine_demo.BaseViewModelActivity
 import com.shen.somebase.R
+import com.shen.somebase.coroutine.BaseViewModelActivity
 import com.shen.somebase.model.SubscribeIndustry
 import com.shen.somebase.widget.manager_drag_adapter_kt.AdapterManager
 import com.shen.somebase.widget.manager_drag_adapter_kt.DragSwipeAdapter

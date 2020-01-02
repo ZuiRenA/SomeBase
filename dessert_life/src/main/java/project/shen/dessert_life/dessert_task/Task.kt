@@ -73,14 +73,14 @@ abstract class DessertTask : IDessertTask {
     /**
      * 当前Task依赖的Task集合（需要等待被依赖的Task执行完毕才能执行自己），默认没有依赖
      */
-    override val dependOn: List<Class<out DessertTask>>? = null
+    override val dependOn: MutableList<Class<out DessertTask>> = mutableListOf()
 
     /**
      * 是否在主线程进行，默认不在
      */
     override val runOnMainThread: Boolean = false
 
-    override val tailRunnable: Runnable? = null
+    override var tailRunnable: Runnable? = null
 
     override val needCall: Boolean = false
 

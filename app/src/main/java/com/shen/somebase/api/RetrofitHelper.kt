@@ -1,6 +1,7 @@
 package com.shen.somebase.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.shen.somebase.task.TaskObj
 import com.shen.somebase.util.DebugLog
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,7 +31,7 @@ class RetrofitHelper private constructor(){
 
         val retrofit = Retrofit.Builder()
                 //设置网络请求的Url地址
-                .baseUrl("")
+                .baseUrl("https://www.baidu.com")
                 //设置数据解析器
                 .addConverterFactory(GsonConverterFactory.create())
                 //设置网络请求适配器，使其支持协程与RxAndroid

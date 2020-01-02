@@ -9,7 +9,7 @@ import project.shen.dessert_life.dessert_task.DessertTask
  **/
 class TaskBuilder : DessertTask() {
 
-    override val dependOn: List<Class<out DessertTask>>? = listOf(TaskThree::class.java)
+    override val dependOn: MutableList<Class<out DessertTask>> = mutableListOf(TaskThree::class.java)
 
     override fun run() {
         ActivityBuilder.INSTANCE.init(context)
