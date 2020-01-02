@@ -1,13 +1,11 @@
 package project.shen.dessert_life.dessert_task.annotation_tools
 
-import project.shen.dessert_life.dessert_task.DessertTask
-
 /**
  *  created by shen
  *  at 2020.2020/1/2.10:08
  *  @author shen
  */
-class DessertMethodImpl<T>(taskFactory: TaskFactory) : DessertMethod<T>(taskFactory) {
+class DessertMethodImpl <T> (taskFactory: TaskFactory) : DessertMethod <T> (taskFactory) {
     override fun addDependOn(tasksMethod: List<DessertMethod<*>>) {
         if (taskFactory.type != TaskFactory.Companion.Builder.FactoryType.TASK) {
             return

@@ -24,13 +24,20 @@ class AnnotationConvertTools private constructor () {
         }
     }
 
+    val cacheInterfaceImpl: Any
+        get() = createCache::class.java.classes.first {
+            it.simpleName == "DefaultImpls"
+        }.newInstance()
+
     private val serviceMethodCache: MutableMap<Method, DessertMethod<*>> = ConcurrentHashMap()
     private var dispatcherNormal: DessertDispatcher? = null
     private var dispatcherDelay: DelayDessertDispatcher? = null
+    internal lateinit var createCache: Class<*>
 
     @Suppress("UNCHECKED_CAST")
     fun <T> create(service: Class<T>): T {
         validateServiceInterface(service)
+        createCache = service
         return Proxy.newProxyInstance(service.classLoader, arrayOf(service)) { _, method, args ->
             if (method.declaringClass == Objects::class.java) {
                 return@newProxyInstance method.invoke(this, args)
@@ -38,25 +45,6 @@ class AnnotationConvertTools private constructor () {
 
             loadServiceMethod(method, args ?: emptyArray())
         } as T
-    }
-
-    fun last() {
-        val cacheMethods = serviceMethodCache.values.toList()
-
-        if (cacheMethods.isEmpty()) {
-            return
-        }
-
-        serviceMethodCache.values.forEach {
-            if (it.taskFactory.type == TaskFactory.Companion.Builder.FactoryType.TASK) {
-                it.addDependOn(cacheMethods)
-                it.addTailRunnable(cacheMethods)
-                it.addCallback(cacheMethods)
-
-                dispatcherNormal?.addTask(it.taskFactory.task)
-                dispatcherDelay?.addTask(it.taskFactory.task ?: throw IllegalArgumentException("Can't find task by $it"))
-            }
-        }
     }
 
     fun dispatcher(dispatcher: DessertDispatcher): AnnotationConvertTools {
@@ -69,7 +57,7 @@ class AnnotationConvertTools private constructor () {
         return this
     }
 
-    private fun loadServiceMethod(method: Method, args: Array<Any>): DessertMethod<*>? {
+    private fun loadServiceMethod(method: Method, args: Array<Any>): DessertMethod<*> {
         var serviceMethod = serviceMethodCache[method]
 
         serviceMethod?.let { return it }
@@ -80,6 +68,26 @@ class AnnotationConvertTools private constructor () {
             }
         }
 
-        return serviceMethod
+        invoke(serviceMethod!!)
+        return serviceMethod!!
+    }
+
+    private fun invoke(serviceMethod: DessertMethod<*>) {
+        val cacheMethods = serviceMethodCache.values.toList()
+
+        if (cacheMethods.isEmpty()) {
+            return
+        }
+
+        serviceMethod.run {
+            if (taskFactory.type == TaskFactory.Companion.Builder.FactoryType.TASK) {
+                addDependOn(cacheMethods)
+                addTailRunnable(cacheMethods)
+                addCallback(cacheMethods)
+
+                dispatcherNormal?.addTask(taskFactory.task)
+                dispatcherDelay?.addTask(taskFactory.task ?: throw IllegalArgumentException("Can't find task by $serviceMethod"))
+            }
+        }
     }
 }

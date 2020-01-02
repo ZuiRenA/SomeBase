@@ -1,6 +1,8 @@
 package com.shen.somebase.task
 
 import android.util.Log
+import com.shen.runtime.ActivityBuilder
+import project.shen.dessert_life.dessert_task.DessertDispatcher
 import project.shen.dessert_life.dessert_task.annotation.Task
 import project.shen.dessert_life.dessert_task.annotation.TaskCallback
 import project.shen.dessert_life.dessert_task.annotation.TaskConfig
@@ -14,7 +16,7 @@ interface TaskObj {
 
     @Task
     fun one() {
-        Log.d("one", "start")
+        ActivityBuilder.INSTANCE.init(DessertDispatcher.getContext())
     }
 
     @Task

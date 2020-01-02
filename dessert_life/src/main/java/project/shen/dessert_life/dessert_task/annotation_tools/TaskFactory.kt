@@ -1,5 +1,6 @@
 package project.shen.dessert_life.dessert_task.annotation_tools
 
+import android.util.Log
 import project.shen.dessert_life.dessert_task.DessertTask
 import project.shen.dessert_life.dessert_task.annotation.*
 import project.shen.dessert_life.dessert_task.easyTask
@@ -90,7 +91,14 @@ class TaskFactory(private val builder: Builder) {
                 }
 
                 val dessertTask = if (taskConfig == null) {
-                    easyTask { method.invoke(this, args) }
+                    easyTask {
+                        val clazz = convert.createCache.classes
+                            .first { it.simpleName == "DefaultImpls" }
+                        val methodReal = clazz.methods.first {
+                            it.name == method.name
+                        }
+                        methodReal.invoke(clazz.newInstance())
+                    }
                 } else {
                     initConfig(taskConfig!!)
                 }
@@ -115,7 +123,7 @@ class TaskFactory(private val builder: Builder) {
                 targetCallbackName = annotation.name
 
                 methodCallback = {
-                    method.invoke(this, args)
+                    method.invoke(convert.createCache, args)
                 }
             }
 
@@ -123,7 +131,7 @@ class TaskFactory(private val builder: Builder) {
                 tailRunnableName = annotation.name
 
                 methodRunnable = Runnable {
-                    method.invoke(this, args)
+                    method.invoke(convert.createCache, args)
                 }
             }
 
@@ -144,7 +152,7 @@ class TaskFactory(private val builder: Builder) {
                 override val onlyInMainProcess: Boolean = taskConfig.onlyInMainProcess
 
                 override fun run() {
-                    method.invoke(this, args)
+                    method.invoke(convert.createCache)
                 }
             }
 
