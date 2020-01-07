@@ -42,7 +42,12 @@ class DessertDispatchRunnable : Runnable {
         val tailRunnable = task.tailRunnable
         tailRunnable?.run()
 
-        if (!task.needCall or task.runOnMainThread) {
+        if (task.needCall) {
+            task.callback?.invoke()
+            DebugLog.logD(task.javaClass.simpleName, "Callback finish")
+        }
+
+        if (!task.needCall || task.runOnMainThread) {
             printTaskLog(startTime, waitTime)
 
             markTaskDone()

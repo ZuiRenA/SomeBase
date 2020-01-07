@@ -12,6 +12,8 @@ import java.util.*
 class DelayDessertDispatcher {
     private val delayTasks: Queue<DessertTask> by lazy { LinkedList<DessertTask>() }
 
+    var interfaceCreate = false
+
     private val idleHandler = MessageQueue.IdleHandler {
         if (delayTasks.size > 0) {
             val task = delayTasks.poll()
@@ -28,14 +30,26 @@ class DelayDessertDispatcher {
         return this
     }
 
-    fun <T> create(interfaceObj : Class<T>): DelayDessertDispatcher {
-        AnnotationConvertTools.instance.dispatcher(this)
-            .create(interfaceObj)
+    inline fun <reified T> create(interfaceObj : Class<T>, interfaceImpl: T, autoInvoke: Boolean = true) = AnnotationConvertTools.instance
+        .dispatcher(this)
+        .create(interfaceObj, interfaceImpl).also {
+            this.interfaceCreate = true
+            if (autoInvoke) {
+                it.autoInvoke()
+            }
+        }
 
-        return this
+    inline fun <reified T> T.autoInvoke() {
+        T::class.java.methods.forEach {
+            it.invoke(this)
+        }
     }
 
     fun start() {
+        if (interfaceCreate) {
+            AnnotationConvertTools.instance.autoInvoke()
+        }
+
         Looper.myQueue().addIdleHandler(idleHandler)
     }
 }

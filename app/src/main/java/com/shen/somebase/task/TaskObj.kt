@@ -12,27 +12,19 @@ import project.shen.dessert_life.dessert_task.annotation.TaskConfig
  *  at 2020.2020/1/2.14:11
  *  @author shen
  */
-interface TaskObj {
+interface ITaskObj {
 
     @Task
-    fun one() {
-        ActivityBuilder.INSTANCE.init(DessertDispatcher.getContext())
-    }
+    fun one()
 
     @Task
     @TaskConfig(dependOn = ["one"])
-    fun two() {
-        Log.d("two", "start")
-    }
+    fun two()
 
     @Task
-    @TaskConfig(targetCallback = "callback")
-    fun three() {
-        Log.d("three", "start")
-    }
+    @TaskConfig(targetCallback = "callback", needCall = true)
+    fun three()
 
     @TaskCallback("callback")
-    fun threeCallback() {
-        Log.d("threeCallback", "start")
-    }
+    fun threeCallback()
 }

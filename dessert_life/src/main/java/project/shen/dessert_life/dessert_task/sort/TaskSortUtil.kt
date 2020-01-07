@@ -29,7 +29,7 @@ fun getSortResult(
             return@forEachIndexed
         }
 
-        dessertTask.dependOn?.forEach {
+        dessertTask.dependOn.forEach {
             val indexOfDepend = getIndexOfTask(originTask, clsLaunchTask, it)
             check(indexOfDepend >= 0) { " depends on ${it.simpleName} can not be found in task list at $indexOfDepend" }
             dependSet.add(indexOfDepend)

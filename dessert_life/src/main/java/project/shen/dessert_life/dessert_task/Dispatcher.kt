@@ -48,6 +48,8 @@ class DessertDispatcher {
 
     private val dependedHasMap by lazy { hashMapOf<Class<out DessertTask>?, ArrayList<DessertTask>>() }
 
+    var interfaceCreate: Boolean = false
+
     /**
      * 启动器分析的次数，统计下分析的耗时；
      */
@@ -68,14 +70,32 @@ class DessertDispatcher {
         return this
     }
 
-    fun <T> create(interfaceObj : Class<T>) =
+    inline fun <reified T> create(
+        interfaceObj : Class<T>,
+        interfaceObjImpl: T,
+        autoInvoke: Boolean = true
+    ) =
         AnnotationConvertTools.instance
             .dispatcher(this)
-            .create(interfaceObj)
+            .create(interfaceObj, interfaceObjImpl).also {
+                this.interfaceCreate = true
+                if (autoInvoke) {
+                    it.autoInvoke()
+                }
+            }
 
+    inline fun <reified T> T.autoInvoke() {
+        T::class.java.methods.forEach {
+            it.invoke(this)
+        }
+    }
 
     @UiThread
     fun start() {
+        if (interfaceCreate) {
+            AnnotationConvertTools.instance.autoInvoke()
+        }
+
         startTime = System.currentTimeMillis()
         require(Looper.getMainLooper() == Looper.myLooper()) { "must be called from UiThread" }
 
@@ -148,7 +168,7 @@ class DessertDispatcher {
         mainThreadTask.forEach {
             val time = System.currentTimeMillis()
             DessertDispatchRunnable(it, this).run()
-            DebugLog.logD(it.javaClass.simpleName, "real main " + (System.currentTimeMillis() - time));
+            DebugLog.logD(it.javaClass.simpleName, "real main " + (System.currentTimeMillis() - time))
         }
 
         DebugLog.logD("main task duration", System.currentTimeMillis() - startTime)
@@ -225,7 +245,7 @@ class DessertDispatcher {
 
     private fun DessertTask.collectDepends() {
         if (!dependOn.isNullOrEmpty()) {
-            dependOn?.forEach {
+            dependOn.forEach {
                 if (dependedHasMap[it] == null) {
                     dependedHasMap[it] = arrayListOf()
                 }

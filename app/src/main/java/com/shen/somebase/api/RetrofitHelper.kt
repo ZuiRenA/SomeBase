@@ -1,7 +1,6 @@
 package com.shen.somebase.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.shen.somebase.task.TaskObj
 import com.shen.somebase.util.DebugLog
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor

@@ -24,23 +24,18 @@ class AnnotationConvertTools private constructor () {
         }
     }
 
-    val cacheInterfaceImpl: Any
-        get() = createCache::class.java.classes.first {
-            it.simpleName == "DefaultImpls"
-        }.newInstance()
-
     private val serviceMethodCache: MutableMap<Method, DessertMethod<*>> = ConcurrentHashMap()
     private var dispatcherNormal: DessertDispatcher? = null
     private var dispatcherDelay: DelayDessertDispatcher? = null
-    internal lateinit var createCache: Class<*>
+    internal lateinit var createCache: Any
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> create(service: Class<T>): T {
-        validateServiceInterface(service)
-        createCache = service
-        return Proxy.newProxyInstance(service.classLoader, arrayOf(service)) { _, method, args ->
+    fun <T> create(taskObj: Class<T>, taskObjImpl: T): T {
+        validateServiceInterface(taskObj)
+        createCache = taskObjImpl!!
+        return Proxy.newProxyInstance(taskObj.classLoader, arrayOf(taskObj)) { _, method, args ->
             if (method.declaringClass == Objects::class.java) {
-                return@newProxyInstance method.invoke(this, args)
+                return@newProxyInstance method.invoke(taskObjImpl, args)
             }
 
             loadServiceMethod(method, args ?: emptyArray())
@@ -68,8 +63,17 @@ class AnnotationConvertTools private constructor () {
             }
         }
 
-        invoke(serviceMethod!!)
         return serviceMethod!!
+    }
+
+    internal fun autoInvoke() {
+        if (serviceMethodCache.isEmpty()) {
+            return
+        }
+
+        serviceMethodCache.values.forEach {
+            invoke(it)
+        }
     }
 
     private fun invoke(serviceMethod: DessertMethod<*>) {

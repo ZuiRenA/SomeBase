@@ -60,16 +60,14 @@ annotation class TaskConfig(
 )
 
 @Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class TaskCallback(
     val name: String
 )
 
 @Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class TaskTailRunnable(
     val name: String
 )
-
-typealias UnitFunction = () -> Unit
 

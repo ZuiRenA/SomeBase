@@ -6,6 +6,7 @@ import project.shen.dessert_life.dessert_task.annotation.*
 import project.shen.dessert_life.dessert_task.easyTask
 import project.shen.dessert_life.dessert_task.getCPUExecute
 import project.shen.dessert_life.dessert_task.getIOExecute
+import project.shen.dessert_life.utils.DebugLog
 import java.lang.reflect.Method
 import java.util.concurrent.ExecutorService
 
@@ -54,6 +55,7 @@ class TaskFactory(private val builder: Builder) {
             internal var tailRunnableName: String = ""
             internal var targetCallbackName: String = ""
 
+
             fun build(): TaskFactory {
                 methodAnnotations.forEach {
                     parseMethodAnnotation(it)
@@ -92,12 +94,7 @@ class TaskFactory(private val builder: Builder) {
 
                 val dessertTask = if (taskConfig == null) {
                     easyTask {
-                        val clazz = convert.createCache.classes
-                            .first { it.simpleName == "DefaultImpls" }
-                        val methodReal = clazz.methods.first {
-                            it.name == method.name
-                        }
-                        methodReal.invoke(clazz.newInstance())
+                        invokeMethod()
                     }
                 } else {
                     initConfig(taskConfig!!)
@@ -123,7 +120,7 @@ class TaskFactory(private val builder: Builder) {
                 targetCallbackName = annotation.name
 
                 methodCallback = {
-                    method.invoke(convert.createCache, args)
+                    invokeMethod()
                 }
             }
 
@@ -131,7 +128,7 @@ class TaskFactory(private val builder: Builder) {
                 tailRunnableName = annotation.name
 
                 methodRunnable = Runnable {
-                    method.invoke(convert.createCache, args)
+                    invokeMethod()
                 }
             }
 
@@ -152,7 +149,15 @@ class TaskFactory(private val builder: Builder) {
                 override val onlyInMainProcess: Boolean = taskConfig.onlyInMainProcess
 
                 override fun run() {
+                    invokeMethod()
+                }
+            }
+
+            private fun invokeMethod() {
+                if (args.isEmpty()) {
                     method.invoke(convert.createCache)
+                } else {
+                    method.invoke(convert.createCache, args)
                 }
             }
 
