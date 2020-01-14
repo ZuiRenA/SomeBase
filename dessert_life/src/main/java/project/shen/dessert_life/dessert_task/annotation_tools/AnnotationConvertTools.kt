@@ -19,8 +19,8 @@ class AnnotationConvertTools private constructor () {
         val instance by lazy { AnnotationConvertTools() }
 
         fun <T> validateServiceInterface(service: Class<T>) {
-            require(service.isInterface) { "API declarations must be interfaces." }
-            require(service.interfaces.isEmpty()) { "API interfaces must not extend other interfaces." }
+            require(service.isInterface) { "Task declarations must be interfaces." }
+            require(service.interfaces.isEmpty()) { "Task interfaces must not extend other interfaces." }
         }
     }
 
@@ -30,17 +30,18 @@ class AnnotationConvertTools private constructor () {
     internal lateinit var createCache: Any
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> create(taskObj: Class<T>, taskObjImpl: T): T {
+    fun <T> create(taskObj: Class<T>, taskObjImpl: T) {
         validateServiceInterface(taskObj)
-        createCache = taskObjImpl!!
-        return Proxy.newProxyInstance(taskObj.classLoader, arrayOf(taskObj)) { _, method, args ->
-            if (method.declaringClass == Objects::class.java) {
-                return@newProxyInstance method.invoke(taskObjImpl, args)
-            }
 
-            loadServiceMethod(method, args ?: emptyArray())
-        } as T
+        taskObj.methods.forEach {
+            loadServiceMethod(it, emptyArray())
+        }
+        require(taskObjImpl != null) {
+            "The Interface Implement must not be null"
+        }
+        createCache = taskObjImpl
     }
+
 
     fun dispatcher(dispatcher: DessertDispatcher): AnnotationConvertTools {
         dispatcherNormal = dispatcher

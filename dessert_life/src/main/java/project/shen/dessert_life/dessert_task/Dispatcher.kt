@@ -48,7 +48,7 @@ class DessertDispatcher {
 
     private val dependedHasMap by lazy { hashMapOf<Class<out DessertTask>?, ArrayList<DessertTask>>() }
 
-    var interfaceCreate: Boolean = false
+    private var interfaceCreate: Boolean = false
 
     /**
      * 启动器分析的次数，统计下分析的耗时；
@@ -70,25 +70,17 @@ class DessertDispatcher {
         return this
     }
 
-    inline fun <reified T> create(
+    fun <T> create(
         interfaceObj : Class<T>,
-        interfaceObjImpl: T,
-        autoInvoke: Boolean = true
-    ) =
+        interfaceObjImpl: T
+    ) {
         AnnotationConvertTools.instance
             .dispatcher(this)
             .create(interfaceObj, interfaceObjImpl).also {
                 this.interfaceCreate = true
-                if (autoInvoke) {
-                    it.autoInvoke()
-                }
             }
-
-    inline fun <reified T> T.autoInvoke() {
-        T::class.java.methods.forEach {
-            it.invoke(this)
-        }
     }
+
 
     @UiThread
     fun start() {
