@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.shen.dingo_log.DingoLog
 import com.shen.somebase.R
 import com.shen.somebase.widget.ToastWidget
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,11 +16,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn1.setOnClickListener {
-            JavaTestActivityBuilder.start(this, 30, "shen", "wow")
+//            JavaTestActivityBuilder.start(this, 30, "shen", "wow")
+            DingoLog.logC.v("wow")
         }
 
         btn2.setOnClickListener {
-            startKotlinTestActivity("shen")
+//            startKotlinTestActivity("shen")
+            DingoLog.logM.v("wow")
         }
 
         btn3.setOnClickListener {
@@ -48,6 +51,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }.show()
         }
-
     }
 }

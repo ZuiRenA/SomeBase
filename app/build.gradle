@@ -65,4 +65,5 @@ dependencies {
     implementation project(":runtime")
     kapt project(":compiler")
     implementation project(":dessert_life")
+    implementation project(":dingo_log")
 }
