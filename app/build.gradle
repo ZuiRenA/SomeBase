@@ -64,5 +64,4 @@ dependencies {
     implementation project(":annotations")
     implementation project(":runtime")
     kapt project(":compiler")
-    implementation project(":dessert_life")
 }
